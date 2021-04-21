@@ -1,3 +1,10 @@
+# 0.5 series
+
+* Add additional functions:
+  - CreateService
+  - OpenService
+  - DeleteService
+
 # 0.4 series
 
 ## 0.4.0.1

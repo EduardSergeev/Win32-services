@@ -40,3 +40,37 @@ foreign import WINDOWS_CCONV "windows.h SetServiceStatus"
 
 foreign import WINDOWS_CCONV "windows.h StartServiceCtrlDispatcherW"
     c_StartServiceCtrlDispatcher :: Ptr ServiceTableEntry -> IO BOOL
+
+foreign import WINDOWS_CCONV "windows.h OpenSCManagerW"
+    c_OpenSCManagerW ::
+        LPCWSTR ->
+        LPCWSTR ->
+        DWORD ->
+        IO HANDLE
+
+foreign import WINDOWS_CCONV "windows.h OpenServiceW"
+    c_OpenServiceW ::
+        HANDLE ->
+        LPCWSTR ->
+        DWORD ->
+        IO HANDLE
+
+foreign import WINDOWS_CCONV "windows.h CreateServiceW"
+    c_CreateServiceW ::
+        HANDLE ->
+        LPCWSTR ->
+        LPCWSTR ->
+        DWORD ->
+        DWORD ->
+        DWORD ->
+        DWORD ->
+        LPCWSTR ->
+        LPCWSTR ->
+        LPDWORD ->
+        LPCWSTR ->
+        LPCWSTR ->
+        LPCWSTR ->
+        IO HANDLE
+
+foreign import WINDOWS_CCONV "windows.h DeleteService"
+    c_DeleteService :: HANDLE -> IO BOOL
