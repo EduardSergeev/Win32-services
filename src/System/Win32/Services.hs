@@ -8,6 +8,9 @@ module System.Win32.Services
     , ServiceState (..)
     , ServiceStatus (..)
     , ServiceType (..)
+    , createService
+    , deleteService
+    , openService
     , queryServiceStatus
     , setServiceStatus
     , startServiceCtrlDispatcher
@@ -182,6 +185,41 @@ toSMF f handler wh = return $ \argc argv -> do
           lptstrx <- peekArray (fromIntegral length') pLPTSTR
           mapM peekTString lptstrx
 
+openService :: String -> Word32 -> IO HANDLE
+openService sn da = do
+    h <- c_OpenSCManagerW nullPtr nullPtr da
+    csn <- newTString sn
+    c_OpenServiceW h csn da
+
+createService :: String
+    -> String
+    -> Word32
+    -> Word32
+    -> Word32
+    -> Word32
+    -> String
+    -> String
+    -> String
+    -> Maybe String
+    -> String
+    -> IO ErrCode
+createService sn dn da st sst ec bpn lg ds msn p = do
+    h <- c_OpenSCManagerW nullPtr nullPtr da
+    csn <- newTString sn
+    cdn <- newTString dn
+    cbpn <- newTString bpn
+    clg <- newTString lg
+    cds <- newTString ds
+    cssn <- maybe (return nullPtr) newTString msn
+    cp <- newTString p
+    sh <- c_CreateServiceW h csn cdn da st sst ec cbpn clg nullPtr cds cssn cp
+    if sh == nullHANDLE then fromDWORD <$> getLastError else return Success
+
+deleteService :: String -> IO ErrCode
+deleteService sn = do
+    h <- openService sn 0x10000
+    b <- c_DeleteService h
+    if b then return Success else fromDWORD <$> getLastError
 
 -- This was originally written with older style handle functions in mind.
 -- I'm now using HandlerEx style functions, and need to add support for
