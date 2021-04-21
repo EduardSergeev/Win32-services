@@ -1,0 +1,8 @@
+{
+  "ghcSimple.replCommand": "stack repl",
+  "files.exclude": {
+    ".stack-work": true,
+    "dist-newstyle": true,
+    "stack.yaml.lock": true
+  }
+}

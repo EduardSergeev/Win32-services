@@ -1,0 +1,6 @@
+resolver: lts-17.9
+
+allow-newer: true
+
+extra-deps:
+  - Win32-errors-0.2.2.5
